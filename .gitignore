@@ -1,3 +1,5 @@
+local.env
+mongodb/
 # Python
 __pycache__/
 *.py[cod]
