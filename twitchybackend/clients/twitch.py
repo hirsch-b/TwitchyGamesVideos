@@ -1,6 +1,6 @@
 from os import environ
 
-from twitchAPI.twitch import Twitch, AuthScope
+from twitchAPI.twitch import AuthScope, Twitch
 
 SCOPES = [AuthScope.USER_READ_EMAIL]
 

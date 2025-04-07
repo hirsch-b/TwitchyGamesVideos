@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from twitchybackend.clients.twitch import get_client
+from twitchybackend.models.game import Game
 
 router = APIRouter(prefix="/twitch")
 
@@ -12,6 +13,11 @@ async def get_games(term: str):
     if term:
         async for game in client.search_categories(term, first=100):
             games.append(game)
+            Game.objects(twitch_id=game.id).update_one(
+                set__name=game.name,
+                set__box_art_url=game.box_art_url,
+                upsert=True,
+            )
     return games
 
 
