@@ -20,11 +20,9 @@ function getVideos(selected_game) {
 
 function queryVideos(selected_game) {
   if (selected_game === undefined) {
-    console.warn('Missing ID', selected_game)
-
     return
   }
-  console.log('Getting videos for', selected_game)
+
   const promise = fetch(`/api/twitch/videos-by-game/${selected_game.twitch_id}`)
   return promise
     .then((response) => {

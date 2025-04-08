@@ -21,10 +21,7 @@ function onClick(selected_game) {
 }
 
 function onSubmit() {
-  // Launch search
-  console.log('onSubmit', game)
   if (game.value) {
-    console.log('Searching for', game.value)
     emit('videosSearch', game.value)
   }
   autocomplete.value = []
