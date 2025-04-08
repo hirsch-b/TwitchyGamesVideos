@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { Game } from './types'
+import type { Game } from '../types'
 
 const term = ref('')
 const game = ref()
-const autocomplete = ref([])
+const autocomplete = ref<Game[]>([])
 
 function onChange() {
   getAutocomplete()
@@ -14,7 +14,7 @@ const emit = defineEmits<{
   (e: 'videosSearch', value: string): void
 }>()
 
-function onClick(selected_game) {
+function onClick(selected_game: Game) {
   term.value = selected_game.name
   game.value = selected_game
   onSubmit()
@@ -44,8 +44,8 @@ function getAutocomplete() {
     })
 }
 
-function debounce(f, wait) {
-  let timeout
+function debounce(f: () => void, wait: number) {
+  let timeout: number
   return () => {
     clearTimeout(timeout)
     timeout = setTimeout(() => f(), wait)
