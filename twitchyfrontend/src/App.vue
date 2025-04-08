@@ -2,11 +2,11 @@
 import SearchGame from './components/SearchGame.vue'
 import GameVideos from './components/GameVideos.vue'
 import type { Game, Video } from './types'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const game = ref<Game>()
 const videos = ref<Video[]>([])
-let interval: number | undefined = undefined
+const interval: number | undefined = undefined
 
 const emit = defineEmits<{
   (e: 'videos', value: Game): any
