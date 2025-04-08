@@ -1,17 +1,42 @@
 <script setup lang="ts">
 import SearchGame from './components/SearchGame.vue'
 import GameVideos from './components/GameVideos.vue'
-import { ref } from 'vue'
-const videos = ref([])
+import type { Game, Video } from './types'
+import { ref, watch } from 'vue'
+
+const game = ref<Game>()
+const videos = ref<Video[]>([])
+
+const emit = defineEmits<{
+  (e: 'videos', value: string): void
+}>()
+
+function getVideos(selected_game) {
+  if (selected_game === undefined) {
+    console.warn('Missing ID', selected_game)
+
+    return
+  }
+  console.log('Getting videos for', selected_game)
+  const promise = fetch(`/api/twitch/videos-by-game/${selected_game.twitch_id}`)
+  return promise
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      game.value = response.game
+      videos.value = response.videos
+    })
+}
 </script>
 
 <template>
   <header>
-    <SearchGame />
+    <SearchGame @videosSearch="getVideos" />
   </header>
 
   <main>
-    <GameVideos />
+    <GameVideos :videos="videos" :game="game" />
   </main>
 </template>
 

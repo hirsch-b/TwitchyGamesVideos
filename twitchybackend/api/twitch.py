@@ -1,3 +1,4 @@
+from functools import lru_cache
 from fastapi import APIRouter, Response
 
 from twitchybackend.clients.twitch import get_client
@@ -54,6 +55,7 @@ async def get_game_by_id(game_id: str):
     return game
 
 
+@lru_cache()
 @router.get("/games/{term}")
 async def get_games(term: str):
     client = await get_client()
