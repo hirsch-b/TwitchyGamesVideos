@@ -1,0 +1,54 @@
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import type { Game } from './types'
+
+const term = ref('')
+const autocomplete = ref([])
+
+function onChange() {
+  console.log(term)
+  if (term.value.length > 3) {
+    getAutocomplete()
+  }
+}
+
+function onClick(game) {
+  term.value = game.name
+}
+
+function getAutocomplete() {
+  const promise = fetch('/api/twitch/games/' + encodeURI(term.value))
+  return promise
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      autocomplete.value = response
+    })
+}
+
+function debounce(f, wait) {
+  let timeout
+  return () => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => f(), wait)
+  }
+}
+
+watch(term, debounce(onChange, 400))
+</script>
+
+<template>
+  <nav>
+    <div>
+      <input v-model.trim="term" type="text" placeholder="Search for a game" />
+      <ul v-show="autocomplete.length > 0">
+        <li v-on:click="() => onClick(game)" v-for="game in autocomplete">{{ game.name }}</li>
+      </ul>
+    </div>
+    <div>
+      <button type="button" v-on:click="">Search</button>
+      {{ term }}
+    </div>
+  </nav>
+</template>
