@@ -1,5 +1,6 @@
-from mongoengine import connect
 from os import environ
+
+from mongoengine import connect
 
 
 def init_mongodb():

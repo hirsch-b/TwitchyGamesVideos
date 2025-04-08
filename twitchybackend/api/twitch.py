@@ -34,7 +34,9 @@ def json_handler(obj):
 
 
 def jsonify_response(data):
-    return Response(json.dumps(data, default=json_handler), media_type="application/json")
+    return Response(
+        json.dumps(data, default=json_handler), media_type="application/json"
+    )
 
 
 def upsert_game(game):
@@ -60,7 +62,9 @@ async def get_games(term: str):
     client = await get_client()
     games = []
     if term:
-        async for game in limit(client.search_categories(term, first=100), 200):
+        async for game in limit(
+            client.search_categories(term, first=100), 200
+        ):
             games.append(upsert_game(game))
     return jsonify_response(games)
 
