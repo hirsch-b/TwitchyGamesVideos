@@ -6,13 +6,13 @@ import { ref, watch } from 'vue'
 
 const game = ref<Game>()
 const videos = ref<Video[]>([])
-let interval: number
+let interval: number | undefined = undefined
 
 const emit = defineEmits<{
-  (e: 'videos', value: string): any
+  (e: 'videos', value: Game): any
 }>()
 
-function getVideos(selected_game: string) {
+function getVideos(selected_game: Game) {
   if (interval !== undefined) {
     clearInterval(interval)
   }

@@ -2,8 +2,8 @@
 import { ref, watch } from 'vue'
 import type { Game } from '../types'
 
-const term = ref('')
-const game = ref()
+const term = ref<string>('')
+const game = ref<Game>()
 const autocomplete = ref<Game[]>([])
 
 function onChange() {
@@ -11,7 +11,7 @@ function onChange() {
 }
 
 const emit = defineEmits<{
-  (e: 'videosSearch', value: string): void
+  (e: 'videosSearch', value: Game): void
 }>()
 
 function onClick(selected_game: Game) {
