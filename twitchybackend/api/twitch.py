@@ -1,19 +1,19 @@
-from functools import lru_cache
+import json
+
 from fastapi import APIRouter, Response
+from mongoengine import Document
+from twitchAPI.helper import first, limit
 
 from twitchybackend.clients.twitch import get_client
 from twitchybackend.models.game import Game
-from twitchAPI.helper import limit, first
-from fastapi.responses import JSONResponse
-
-import json
-from mongoengine import Document
 
 router = APIRouter(prefix="/twitch")
 
-from bson import ObjectId
 from datetime import datetime
 from enum import Enum
+
+from bson import ObjectId
+
 
 def json_handler(obj):
     if isinstance(obj, ObjectId):
@@ -55,7 +55,6 @@ async def get_game_by_id(game_id: str):
     return game
 
 
-@lru_cache()
 @router.get("/games/{term}")
 async def get_games(term: str):
     client = await get_client()
