@@ -8,10 +8,7 @@ const props = defineProps<{
 }>()
 
 function thumb(vid: string, width: number, height: number) {
-  if (vid.startsWith('https://vod-secure.twitch.tv/_404/')) {
-    return `//picsum.photos/${width}/${height}`
-  }
-  return vid.replace('%{width}', width).replace('%{height}', height)
+  return `url(${vid.replace('%{width}', width).replace('%{height}', height)})`
 }
 </script>
 
@@ -20,10 +17,12 @@ function thumb(vid: string, width: number, height: number) {
   <ul v-show="props.videos !== undefined">
     <li
       v-for="video in props.videos"
-      :style="{ backgroundImage: `${thumb(video.thumbnail_url, 640, 480)}` }"
+      :style="{ backgroundImage: thumb(video.thumbnail_url, 320, 180) }"
     >
       <a :href="video.url">
-        <h2>{{ video.title || 'No title' }}</h2>
+        <h2>
+          {{ video.title || 'No title' }}
+        </h2>
       </a>
     </li>
   </ul>
@@ -39,12 +38,13 @@ ul {
 }
 
 li {
+  position: relative;
   width: 320px;
   height: 180px;
-  position: relative;
   display: block;
   background-size: cover;
 }
+
 h2 {
   font-size: 1.2em;
   position: absolute;

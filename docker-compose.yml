@@ -31,3 +31,5 @@ services:
       # ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
       ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongodb

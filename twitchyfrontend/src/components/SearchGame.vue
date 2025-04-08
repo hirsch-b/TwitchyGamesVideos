@@ -7,18 +7,16 @@ const game = ref()
 const autocomplete = ref([])
 
 function onChange() {
-  console.log(term)
-  if (term.value.length > 3) {
-    getAutocomplete()
-  }
+  getAutocomplete()
 }
 
 const emit = defineEmits<{
   (e: 'videosSearch', value: string): void
 }>()
 
-function onClick(game) {
-  term.value = game.name
+function onClick(selected_game) {
+  term.value = selected_game.name
+  game.value = selected_game
   onSubmit()
 }
 
@@ -29,6 +27,7 @@ function onSubmit() {
     console.log('Searching for', game.value)
     emit('videosSearch', game.value)
   }
+  autocomplete.value = []
 }
 
 function getAutocomplete() {
@@ -42,6 +41,8 @@ function getAutocomplete() {
       if (json.length == 1) {
         game.value = json[0]
         onSubmit()
+      } else {
+        game.value = undefined
       }
     })
 }
