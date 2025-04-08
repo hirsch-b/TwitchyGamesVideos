@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import GameBox from './GameBox.vue'
-import type { Game, Video } from './types'
+import type { Game, Video } from '../types'
 
 const props = defineProps<{
   videos?: Video[]
   game?: Game
 }>()
 
-function thumb(vid: string, width: number, height: number) {
+function thumb(vid: string, width: string, height: string) {
   return `url(${vid.replace('%{width}', width).replace('%{height}', height)})`
 }
 </script>
@@ -17,7 +17,7 @@ function thumb(vid: string, width: number, height: number) {
   <ul v-show="props.videos !== undefined">
     <li
       v-for="video in props.videos"
-      :style="{ backgroundImage: thumb(video.thumbnail_url, 320, 180) }"
+      :style="{ backgroundImage: thumb(video.thumbnail_url, '320', '180') }"
     >
       <a :href="video.url">
         <h2>
