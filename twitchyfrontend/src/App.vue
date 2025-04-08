@@ -6,12 +6,19 @@ import { ref, watch } from 'vue'
 
 const game = ref<Game>()
 const videos = ref<Video[]>([])
+let interval
 
 const emit = defineEmits<{
   (e: 'videos', value: string): void
 }>()
 
 function getVideos(selected_game) {
+  clearInterval(interval)
+  queryVideos(selected_game)
+  setInterval(() => queryVideos(selected_game), 2 * 60000)
+}
+
+function queryVideos(selected_game) {
   if (selected_game === undefined) {
     console.warn('Missing ID', selected_game)
 

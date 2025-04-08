@@ -34,6 +34,7 @@ ul {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 15px;
 }
 
@@ -49,7 +50,6 @@ h2 {
   font-size: 1.2em;
   position: absolute;
   top: 0px;
-  left: 2.5px;
   padding: 5px;
   overflow: hidden;
   background: #3d3d3d93;
