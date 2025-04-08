@@ -12,8 +12,12 @@ fastapi dev twitchybackend/app.py
 ```bash
 pip install -r requirements.txt -r requirements.dev.txt
 pytest tests/
-black
-isort
+```
+
+## Running the project
+
+```bash
+docker compose up -d --build
 ```
 
 ## Testing endpoints
