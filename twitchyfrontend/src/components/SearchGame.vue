@@ -7,9 +7,13 @@ const isAutocompleteOpen = ref<boolean>(false)
 const term = ref<string>('')
 const game = ref<Game>()
 const autocomplete = ref<Game[]>([])
+let last_fetched: string = ''
 
 function onChange() {
-  getAutocomplete()
+  if (term.value != last_fetched) {
+    last_fetched = term.value
+    getAutocomplete()
+  }
 }
 
 const emit = defineEmits<{
@@ -17,6 +21,7 @@ const emit = defineEmits<{
 }>()
 
 function onClick(selected_game: Game) {
+  last_fetched = selected_game.name
   term.value = selected_game.name
   game.value = selected_game
   onSubmit()
