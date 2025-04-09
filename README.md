@@ -25,11 +25,15 @@ TWITCH_CLIENT_ID=Application ID
 TWITCH_SECRET=Application Secret
 ```
 
+Running the stack:
+
 ```bash
 docker compose up -d --build
 cd twitchyfrontend
 npm run dev
 ```
+
+The FastAPI will be served from the docker container on port 8000, but for maximum convenience (and avoid CORS errors) the API calls will be proxied through Vite.
 
 ## Testing endpoints
 
