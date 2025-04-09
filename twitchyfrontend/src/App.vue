@@ -9,18 +9,20 @@ import { ref } from 'vue'
 const game = ref<Game>()
 const isLoading = ref<boolean>(false)
 const videos = ref<Video[]>([])
-const interval: number | undefined = undefined
+let interval: number | undefined = undefined
 
 const emit = defineEmits<{
   (e: 'videos', value: Game): any
 }>()
 
 function getVideos(selected_game: Game) {
+  isLoading.value = true
   if (interval !== undefined) {
     clearInterval(interval)
   }
   queryVideos(selected_game)
-  setInterval(() => queryVideos(selected_game), 2 * 60000)
+  interval = setInterval(() => queryVideos(selected_game), 2 * 60000)
+  // interval = setInterval(() => queryVideos(selected_game), 3000)
 }
 
 function queryVideos(selected_game: Game) {
@@ -28,7 +30,6 @@ function queryVideos(selected_game: Game) {
     return
   }
   game.value = selected_game
-  isLoading.value = true
 
   const promise = fetch(`/api/twitch/videos-by-game/${selected_game.twitch_id}`)
   return promise
@@ -51,7 +52,8 @@ function queryVideos(selected_game: Game) {
     <Loading v-if="isLoading" />
     <div v-if="!isLoading">
       <GameBox :game="game" />
-      <GameVideos :videos="videos" :game="game" />
+      <div v-if="videos.length == 0">No videos were found</div>
+      <GameVideos v-if="videos.length > 0" :videos="videos" :game="game" />
     </div>
   </main>
 </template>
