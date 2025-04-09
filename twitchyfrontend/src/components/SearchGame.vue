@@ -10,7 +10,7 @@ const autocomplete = ref<Game[]>([])
 let last_fetched: string = ''
 
 function onChange() {
-  if (term.value != last_fetched) {
+  if (term.value != '' && term.value != last_fetched) {
     last_fetched = term.value
     getAutocomplete()
   }
@@ -77,7 +77,7 @@ watch(term, debounce(onChange, 400))
     <form v-on:submit="onSubmit()">
       <div>
         <input v-model.trim="term" type="text" placeholder="Search for a game" />
-        <div v-if="isAutocompleteOpen" class="autocomplete">
+        <div v-if="isAutocompleteOpen && term != ''" class="autocomplete">
           <button type="button" v-on:click="closeAutocomplete">X</button>
           <ul>
             <li v-if="isLoading">Loading</li>
