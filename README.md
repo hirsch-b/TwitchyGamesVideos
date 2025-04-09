@@ -16,8 +16,18 @@ pytest tests/
 
 ## Running the project
 
+You'll need a client ID and a secret from the Twitch console: https://dev.twitch.tv/console
+
+Those tokens must be set in a `local.env` file at the root of the project:
+
+```
+TWITCH_CLIENT_ID=Application ID
+TWITCH_SECRET=Application Secret
+```
+
 ```bash
 docker compose up -d --build
+cd twitchyfrontend
 npm run dev
 ```
 
