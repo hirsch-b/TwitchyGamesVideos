@@ -9,7 +9,7 @@ import { ref } from 'vue'
 const game = ref<Game>()
 const isLoading = ref<boolean>(false)
 const videos = ref<Video[]>([])
-const interval: number | undefined = undefined
+let interval: number | undefined = undefined
 
 const emit = defineEmits<{
   (e: 'videos', value: Game): any
@@ -20,7 +20,7 @@ function getVideos(selected_game: Game) {
     clearInterval(interval)
   }
   queryVideos(selected_game)
-  setInterval(() => queryVideos(selected_game), 2 * 60000)
+  interval = setInterval(() => queryVideos(selected_game), 2 * 60000)
 }
 
 function queryVideos(selected_game: Game) {
