@@ -30,6 +30,7 @@ Running the stack:
 ```bash
 docker compose up -d --build
 cd twitchyfrontend
+npm install
 npm run dev
 ```
 
