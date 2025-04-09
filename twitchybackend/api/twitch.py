@@ -1,59 +1,16 @@
-import json
-
-from fastapi import APIRouter, Response
-from mongoengine import Document
+from fastapi import APIRouter
 from twitchAPI.helper import first, limit
 
 from twitchybackend.clients.twitch import get_client
 from twitchybackend.models.game import Game
+from twitchybackend.utils import jsonify_response
 
 router = APIRouter(prefix="/twitch")
-
-from datetime import datetime
-from enum import Enum
-
-from bson import ObjectId
-
-
-def json_handler(obj):
-    if isinstance(obj, ObjectId):
-        return str(obj)
-    if isinstance(obj, list):
-        return [json_handler(val) for val in obj]
-    if isinstance(obj, dict):
-        return {key: json_handler(val) for key, val in obj.items()}
-    if isinstance(obj, Document):
-        return json_handler(obj._data)
-    if isinstance(obj, datetime):
-        return obj.isoformat()
-    if isinstance(obj, Enum):
-        return obj.value
-    if hasattr(obj, "to_dict"):
-        return obj.to_dict()
-    return obj
-
-
-def jsonify_response(data):
-    return Response(
-        json.dumps(data, default=json_handler), media_type="application/json"
-    )
-
-
-def upsert_game(game):
-    return Game.objects(twitch_id=game.id).modify(
-        set__name=game.name,
-        set__box_art_url=game.box_art_url,
-        upsert=True,
-        new=True,
-    )
 
 
 @router.get("/game/{game_id}")
 async def get_game_by_id(game_id: str):
     game = Game.objects(twitch_id=game_id).first()
-    if not game:
-        client = await get_client()
-        game = upsert_game(await first(client.get_games(game_ids=[game_id])))
     return game
 
 
@@ -62,10 +19,7 @@ async def get_games(term: str):
     client = await get_client()
     games = []
     if term:
-        async for game in limit(
-            client.search_categories(term, first=100), 200
-        ):
-            games.append(upsert_game(game))
+        games = list(Game.objects(name__icontains=term))
     return jsonify_response(games)
 
 
