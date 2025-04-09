@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import GameBox from './GameBox.vue'
 import type { Game, Video } from '../types'
 
 const props = defineProps<{
@@ -13,16 +12,13 @@ function thumb(vid: string, width: string, height: string) {
 </script>
 
 <template>
-  <GameBox :game="props.game" />
   <ul v-show="props.videos !== undefined">
     <li
       v-for="video in props.videos"
       :style="{ backgroundImage: thumb(video.thumbnail_url, '320', '180') }"
     >
       <a :href="video.url">
-        <h2>
-          {{ video.title || 'No title' }}
-        </h2>
+        <h2>{{ video.user_name }} - {{ video.title || 'No title' }}</h2>
       </a>
     </li>
   </ul>

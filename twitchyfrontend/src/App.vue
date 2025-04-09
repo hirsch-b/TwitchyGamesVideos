@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import SearchGame from './components/SearchGame.vue'
+import GameBox from './components/GameBox.vue'
 import GameVideos from './components/GameVideos.vue'
+import Loading from './components/Loading.vue'
 import type { Game, Video } from './types'
 import { ref } from 'vue'
 
 const game = ref<Game>()
+const isLoading = ref<boolean>(false)
 const videos = ref<Video[]>([])
 const interval: number | undefined = undefined
 
@@ -24,6 +27,8 @@ function queryVideos(selected_game: Game) {
   if (selected_game === undefined) {
     return
   }
+  game.value = selected_game
+  isLoading.value = true
 
   const promise = fetch(`/api/twitch/videos-by-game/${selected_game.twitch_id}`)
   return promise
@@ -31,8 +36,8 @@ function queryVideos(selected_game: Game) {
       return response.json()
     })
     .then((response) => {
-      game.value = response.game
       videos.value = response.videos
+      isLoading.value = false
     })
 }
 </script>
@@ -43,7 +48,11 @@ function queryVideos(selected_game: Game) {
   </header>
 
   <main>
-    <GameVideos :videos="videos" :game="game" />
+    <Loading v-if="isLoading" />
+    <div v-if="!isLoading">
+      <GameBox :game="game" />
+      <GameVideos :videos="videos" :game="game" />
+    </div>
   </main>
 </template>
 

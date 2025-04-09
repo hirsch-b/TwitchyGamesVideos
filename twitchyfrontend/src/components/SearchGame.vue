@@ -2,6 +2,8 @@
 import { ref, watch } from 'vue'
 import type { Game } from '../types'
 
+const isLoading = ref<boolean>(false)
+const isAutocompleteOpen = ref<boolean>(false)
 const term = ref<string>('')
 const game = ref<Game>()
 const autocomplete = ref<Game[]>([])
@@ -25,10 +27,14 @@ function onSubmit() {
     emit('videosSearch', game.value)
   }
   autocomplete.value = []
+  isAutocompleteOpen.value = false
 }
 
 function getAutocomplete() {
   const promise = fetch('/api/twitch/games/' + encodeURI(term.value))
+  isLoading.value = true
+  isAutocompleteOpen.value = true
+  autocomplete.value = []
   return promise
     .then((response) => {
       return response.json()
@@ -40,6 +46,7 @@ function getAutocomplete() {
         onSubmit()
       } else {
         game.value = undefined
+        isLoading.value = false
       }
     })
 }
@@ -52,6 +59,11 @@ function debounce(f: () => void, wait: number) {
   }
 }
 
+function closeAutocomplete() {
+  autocomplete.value = []
+  isAutocompleteOpen.value = false
+}
+
 watch(term, debounce(onChange, 400))
 </script>
 
@@ -60,9 +72,13 @@ watch(term, debounce(onChange, 400))
     <form v-on:submit="onSubmit()">
       <div>
         <input v-model.trim="term" type="text" placeholder="Search for a game" />
-        <ul v-show="autocomplete.length > 0">
-          <li v-on:click="() => onClick(game)" v-for="game in autocomplete">{{ game.name }}</li>
-        </ul>
+        <div v-if="isAutocompleteOpen" class="autocomplete">
+          <button type="button" v-on:click="closeAutocomplete">X</button>
+          <ul>
+            <li v-if="isLoading">Loading</li>
+            <li v-on:click="() => onClick(game)" v-for="game in autocomplete">{{ game.name }}</li>
+          </ul>
+        </div>
       </div>
       <div>
         <button type="button" v-on:click="onSubmit()">Search</button>
@@ -70,3 +86,29 @@ watch(term, debounce(onChange, 400))
     </form>
   </nav>
 </template>
+
+<style scoped>
+form {
+  display: flex;
+  flex-direction: row;
+}
+div.autocomplete {
+  z-index: 1337;
+  position: absolute;
+  padding: 5px;
+  background: #5f5f5f;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+ul {
+  padding: 0px;
+  list-style: none;
+}
+li {
+  padding: 0px 5px;
+}
+li:hover {
+  background: #0e0e0ea9;
+  /* padding: 5px; */
+}
+</style>

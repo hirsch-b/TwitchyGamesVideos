@@ -18,6 +18,7 @@ pytest tests/
 
 ```bash
 docker compose up -d --build
+npm run dev
 ```
 
 ## Testing endpoints
