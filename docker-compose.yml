@@ -12,7 +12,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mongodb
+      - mongo
   mongo:
     container_name: mongo
     image: mongo:latest
