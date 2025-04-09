@@ -11,7 +11,7 @@ fastapi dev twitchybackend/app.py
 
 ```bash
 pip install -r requirements.txt -r requirements.dev.txt
-pytest tests/
+python -m pytest tests/
 ```
 
 ## Running the project
