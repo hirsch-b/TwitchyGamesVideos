@@ -3,6 +3,9 @@ name = "twitchybackend"
 description = "I manage campaigns & serious business"
 requires-python = ">=3.12"
 
+[tool.setuptools]
+packages = ["twitchybackend"]
+
 [tool.black]
 line-length = 79
 target-version = ['py312']

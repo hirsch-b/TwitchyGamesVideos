@@ -9,13 +9,13 @@ docker-down:
 	docker compose down
 
 collect-tests:
-	pytest --collect-only tests
+	python -m pytest --collect-only tests/
 
 test:
-	pytest tests
+	python -m pytest tests/
 
 dev:
-	fastapi dev twitchybackend/app.py
+	python -m fastapi dev twitchybackend/app.py
 
 install-deps:
 	pip install -r requirements.txt -r requirements.dev.txt
