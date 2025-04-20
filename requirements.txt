@@ -2,3 +2,5 @@ fastapi[standard]
 twitchapi
 mongoengine
 dotenv
+redis
+apscheduler

@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: app
+    container_name: twitchy_app
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,26 +10,39 @@ services:
       - path: ./local.env
         required: false
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     depends_on:
       - mongo
+  redis:
+    image: redis
+    ports:
+      - "127.0.0.1:6379:6379"
+  redis-commander:
+    container_name: twitchy_redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - "127.0.0.1:8082:8081"
   mongo:
-    container_name: mongo
+    container_name: twitchy_mongo
     image: mongo:latest
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
     volumes:
       - ./mongodb:/data/db
-  # mongoexpress:
-  #   image: mongo-express
-  #   container_name: mongo_express
-  #   ports:
-  #     - 8081:8081
-  #   environment:
-  #     # ME_CONFIG_MONGODB_ADMINUSERNAME: root
-  #     # ME_CONFIG_MONGODB_ADMINPASSWORD: root
-  #     # ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
-  #     ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
-  #     ME_CONFIG_BASICAUTH: false
-  #   depends_on:
-  #     - mongodb
+  mongoexpress:
+    image: mongo-express
+    container_name: twitchy_mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      # ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      # ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      # ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongodb
