@@ -24,15 +24,14 @@ async def build_games_collection():
             logger.debug(
                 "%d games for the letter %s in the DB", count, letter.upper()
             )
-            if limit is None or count < limit:
-                async for game in limit(
-                    client.search_categories(letter, first=100), 500
-                ):
-                    Game.objects(twitch_id=game.id).update(
-                        set__name=game.name,
-                        set__box_art_url=game.box_art_url,
-                        upsert=True,
-                    )
+            async for game in limit(
+                client.search_categories(letter, first=100), 500
+            ):
+                Game.objects(twitch_id=game.id).update(
+                    set__name=game.name,
+                    set__box_art_url=game.box_art_url,
+                    upsert=True,
+                )
         lock.release()
     else:
         logger.debug("Database loading is already running")
