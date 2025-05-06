@@ -3,10 +3,10 @@ from os import environ
 
 from mongoengine import connect
 from redis import Redis
-
-from twitchybackend.models.game import Game
-from twitchybackend.clients.twitch import get_client
 from twitchAPI.helper import limit
+
+from twitchybackend.clients.twitch import get_client
+from twitchybackend.models.game import Game
 
 logger = logging.getLogger(__name__)
 redis: Redis = None
