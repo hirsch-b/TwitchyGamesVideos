@@ -2,6 +2,7 @@ import logging
 from os import environ
 
 from mongoengine import connect
+from pymongo import MongoClient
 from redis import Redis
 from twitchAPI.helper import limit
 
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 redis: Redis = None
 
 
-def init_mongodb():
+def init_mongodb() -> MongoClient:
     host = environ.get("MONGODB_HOST", "localhost")
     port = environ.get("MONGODB_PORT", "27017")
     db = environ.get("MONGODB_DB", "twitchybackend")
@@ -24,7 +25,7 @@ def init_mongodb():
     return mongodb_connection
 
 
-def init_redis():
+def init_redis() -> Redis:
     global redis
     if redis is None:
         host = environ.get("REDIS_HOST", "localhost")

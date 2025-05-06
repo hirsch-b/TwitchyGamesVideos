@@ -2,7 +2,7 @@ import logging
 
 from twitchAPI.helper import limit
 
-from twitchybackend.db import get_client, init_redis, redis
+from twitchybackend.db import get_client
 from twitchybackend.models.game import Game
 from twitchybackend.scheduler.asyncscheduledtask import AsyncScheduledTask
 

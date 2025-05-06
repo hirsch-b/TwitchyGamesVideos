@@ -1,3 +1,3 @@
-from .scheduler import get_scheduler
+from .scheduler import start_scheduler
 
-__all__ = ["get_scheduler"]
+__all__ = ["start_scheduler"]
