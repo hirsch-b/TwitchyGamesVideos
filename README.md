@@ -1,5 +1,13 @@
 # TwitchyGamesVideos
 
+A simple exercise aiming to:
+
+- Learning FastAPI;
+- Using the Twitch API through `twitchapi` package;
+- Playing around with `async`;
+- Importing from Twitch a list of games into a database;
+- Getting started with VueJS.
+
 ## Installing the dependencies
 
 ```bash
@@ -16,7 +24,8 @@ python -m pytest tests/
 
 ## Running the project
 
-You'll need a client ID and a secret from the Twitch console: https://dev.twitch.tv/console
+You'll need a client ID and a secret from the Twitch console:
+https://dev.twitch.tv/console
 
 Those tokens must be set in a `local.env` file at the root of the project:
 
@@ -34,7 +43,9 @@ npm install
 npm run dev
 ```
 
-The FastAPI will be served from the docker container on port 8000, but for maximum convenience (and avoid CORS errors) the API calls will be proxied through Vite.
+The FastAPI will be served from the docker container on port 8000, but for
+maximum convenience (and avoid CORS errors) the API calls will be proxied
+through Vite.
 
 ## Testing endpoints
 

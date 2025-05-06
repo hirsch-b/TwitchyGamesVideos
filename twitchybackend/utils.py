@@ -25,7 +25,9 @@ def json_handler(obj):
     return obj
 
 
-def jsonify_response(data):
+def jsonify_response(data, status_code=200):
     return Response(
-        json.dumps(data, default=json_handler), media_type="application/json"
+        json.dumps(data, default=json_handler),
+        media_type="application/json",
+        status_code=status_code,
     )
