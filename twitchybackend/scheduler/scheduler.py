@@ -1,8 +1,9 @@
-import asyncio
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from .build_game_db import build_games_collection
+
+from .gamecollectionbuilder import GameCollectionBuilderScheduledTask
 
 scheduler = None
 
@@ -32,13 +33,17 @@ def get_scheduler():
             }
         )
 
-        scheduler.add_job(
-            lambda: asyncio.run(build_games_collection()),
-            IntervalTrigger(hours=2),
-            next_run_time=datetime.now(UTC),
-            id="build_games_collection",
-        )
+        # scheduler.add_job(
+        #     lambda: asyncio.run(build_games_collection()),
+        #     IntervalTrigger(hours=2),
+        #     next_run_time=datetime.now(UTC),
+        #     id="build_games_collection",
+        # )
 
         # scheduler.start()
+        now = datetime.now(UTC) + timedelta(seconds=5)
+        GameCollectionBuilderScheduledTask(
+            scheduler, IntervalTrigger(hours=2), now
+        ).schedule(now)
 
     return scheduler
