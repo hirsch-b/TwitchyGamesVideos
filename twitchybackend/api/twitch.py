@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from twitchAPI.helper import first, limit
+from twitchAPI.helper import limit
 
 from twitchybackend.clients.twitch import get_client
 from twitchybackend.models.game import Game
@@ -16,7 +16,6 @@ async def get_game_by_id(game_id: str):
 
 @router.get("/games/{term}")
 async def get_games(term: str):
-    client = await get_client()
     games = []
     if term:
         games = list(Game.objects(name__icontains=term.strip()))
