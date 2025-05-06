@@ -19,7 +19,7 @@ async def get_games(term: str):
     client = await get_client()
     games = []
     if term:
-        games = list(Game.objects(name__icontains=term))
+        games = list(Game.objects(name__icontains=term.strip()))
     return jsonify_response(games)
 
 
