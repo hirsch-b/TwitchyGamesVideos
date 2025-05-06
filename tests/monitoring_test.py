@@ -7,3 +7,6 @@ def test_heartbeat(httpclient):
 def test_status(httpclient):
     response = httpclient.get("/monitoring/status")
     assert response.status_code == 200
+    body = response.json()
+    assert body["mongodb"] is not None
+    assert body["redis"] is not None
